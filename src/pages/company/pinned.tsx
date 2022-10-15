@@ -12,7 +12,9 @@ const createJob = () => {
                     <Image src={Logo} alt={"logo"} width={100} height={100} />
                     <div>
                         <button className='btn bg-white shadow-sm border-none rounded-none shadow-primaryC text-black mr-10  hover:bg-SecondaryC '>
-                            Applications
+                            <Link href={"/company/"}>
+                                Applications
+                            </Link>
                         </button>
                         <button className='btn bg-primaryC hover:bg-SecondaryC hover:text-black rounded-none'>
                             Create Job
