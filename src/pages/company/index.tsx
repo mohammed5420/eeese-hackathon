@@ -23,7 +23,7 @@ const createJob = () => {
                     <div>
                         <ul>
                             <li>
-                                <Link href={"/company/"}></Link>
+                                <Link href={"/company/"}>Applications</Link>
                             </li>
                             <li>
                                 <Link href={"/company/applications"}>applications</Link>
