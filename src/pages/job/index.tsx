@@ -1,7 +1,7 @@
 import { JobType } from "@prisma/client";
 import { NextPage } from "next";
 import Link from "next/link";
-import { trpc } from "../../utils/trpc";
+import { trpc } from "../../../utils/trpc";
 
 const JobsList: NextPage = () => {
   const { data } = trpc.job.getAllJobs.useQuery();
@@ -43,7 +43,7 @@ const JobCard = ({ title, description, type, id }: CardProps) => {
       <h2>Job Type: {type}</h2>
       <Link className="btn btn-primary" href={`/job/${id}`}>
         <a className="text-primary">Apply</a>
-        </Link>
+      </Link>
     </div>
   );
 };

@@ -5,8 +5,8 @@ import { useSession } from "next-auth/react";
 import Router from "next/router";
 import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
-import Input from "../../components/Input";
-import { trpc } from "../../utils/trpc";
+import Input from "../../../components/Input";
+import { trpc } from "../../../utils/trpc";
 
 const NewJob: NextPage = () => {
   const { data: session } = useSession();
@@ -46,7 +46,7 @@ const NewJob: NextPage = () => {
                 jobType: values.jobType,
                 salary: values.salary,
                 title: values.jobTitle,
-                jobRequirements: ["Reactjs","Typescript"],
+                jobRequirements: ["Reactjs", "Typescript"],
               });
             }
           }}

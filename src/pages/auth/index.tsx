@@ -14,8 +14,8 @@ import Image from "next/image";
 
 import Company from './../../images/asPerson.svg';
 import Person from './../../images/asPerson.svg';
-import NavBar from '../components/NavBar'
-import Profile from "../components/Profile";
+import NavBar from '../../components/NavBar'
+import Profile from "../../components/Profile";
 
 const SignUp: NextPage = () => {
 
@@ -29,7 +29,21 @@ const SignUp: NextPage = () => {
       </Head>
       <div className="flex flex-col items-center justify-center space-y-6 container-md mx-24 pb-24">
         <NavBar />
+        <div className="flex  w-full gap-4 px-64 justify-between pt-20">
+          <Link href={"/auth/person/signup"} className="pointer">
+            <div className=" flex flex-col items-center shadow shadow-primaryC px-10 py-8 rounded-3xl ">
+              <Image src={Person} alt={"pick person"} width={300} height={300} />
+              <h2 className="text-primaryC text-3xl">Person</h2>
+            </div>
+          </Link>
+          <Link href={"/auth/company/signup"} >
+            <div className=" flex flex-col items-center shadow shadow-primaryC p-8 rounded-3xl pointer ">
+              <Image src={Company} alt={"pick person"} width={300} height={300} />
+              <h2 className="text-primaryC text-3xl">Copmany</h2>
+            </div>
+          </Link>
 
+        </div>
         <div className="">
           <Profile />
         </div>

@@ -2,7 +2,7 @@ import React from "react";
 
 import Image from "next/image";
 
-import Logo from '../../public/Logo.svg';
+import Logo from './../images/Logo.svg';
 import Link from "next/link";
 
 const Input = ({ }) => {

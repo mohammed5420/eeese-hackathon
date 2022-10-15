@@ -2,7 +2,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import { trpc } from "../../utils/trpc";
+import { trpc } from "../../../utils/trpc";
 
 const JobApplication = () => {
   const { data: session } = useSession();
