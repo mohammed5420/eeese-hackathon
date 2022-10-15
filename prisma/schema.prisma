@@ -53,8 +53,76 @@ model User {
     email         String?   @unique
     emailVerified DateTime?
     image         String?
+    isNew         Int       @default(1)
     accounts      Account[]
     sessions      Session[]
+    Company       Company[]
+    role          ROLE      @default(USER)
+    Person        Person[]
+}
+
+model Person {
+    id           Int            @id @default(autoincrement())
+    createdAt    DateTime       @default(now()) @db.DateTime(6)
+    updatedAt    DateTime       @default(now()) @db.DateTime(6)
+    deletedAt    DateTime?      @db.DateTime(6)
+    user         User           @relation(fields: [userId], references: [id])
+    userId       String
+    Social_links Social_links[]
+    bio          String
+    location     String
+}
+
+model Company {
+    id           Int            @id @default(autoincrement())
+    createdAt    DateTime       @default(now()) @db.DateTime(6)
+    updatedAt    DateTime       @default(now()) @db.DateTime(6)
+    deletedAt    DateTime?      @db.DateTime(6)
+    user         User           @relation(fields: [userId], references: [id])
+    userId       String
+    Social_links Social_links[]
+    location     String
+    Job          Job[]
+    bio          String
+}
+
+model Job {
+    id              Int               @id @default(autoincrement())
+    createdAt       DateTime          @default(now()) @db.DateTime(6)
+    updatedAt       DateTime          @default(now()) @db.DateTime(6)
+    deletedAt       DateTime?         @db.DateTime(6)
+    jobDescription  String
+    title           String
+    jobType         JobType
+    salary          Float
+    jobOption       JobOption
+    companyId       Int
+    company         Company           @relation(fields: [companyId], references: [id])
+    JotRequirements JobRequirements[]
+    Status          JobStatus
+}
+
+model JobRequirements {
+    id        Int       @id @default(autoincrement())
+    createdAt DateTime  @default(now()) @db.DateTime(6)
+    updatedAt DateTime  @default(now()) @db.DateTime(6)
+    deletedAt DateTime? @db.DateTime(6)
+    job       Job       @relation(fields: [jobId], references: [id])
+    jobId     Int
+    text      String
+}
+
+model Social_links {
+    id        Int       @id @default(autoincrement())
+    createdAt DateTime  @default(now()) @db.DateTime(6)
+    updatedAt DateTime  @default(now()) @db.DateTime(6)
+    deletedAt DateTime? @db.DateTime(6)
+    name      String
+    url       String
+    Company   Company?  @relation(fields: [companyId], references: [id])
+    companyId Int?
+    Person    Person?   @relation(fields: [personId], references: [id])
+    personId  Int?
 }
 
 model VerificationToken {
@@ -63,4 +131,24 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+enum JobType {
+    FULLTIME
+    PARTTIME
+}
+
+enum JobOption {
+    ONSITE
+    REMOTE
+}
+
+enum JobStatus {
+    ACTIVE
+    INACTIVE
+}
+
+enum ROLE {
+    COMPANY
+    USER
 }
