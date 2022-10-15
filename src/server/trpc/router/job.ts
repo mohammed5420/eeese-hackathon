@@ -22,10 +22,11 @@ export const jobRouter = router({
           userId: input.companyId,
         },
       });
-      if(!company) throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "Company Not found"
-      })
+      if (!company)
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Company Not found",
+        });
 
       const job = await ctx.prisma.job.create({
         data: {
@@ -50,12 +51,77 @@ export const jobRouter = router({
 
       await ctx.prisma.$transaction(jobRequirementsTransaction);
     }),
+  getJobById: publicProcedure
+    .input(
+      z.object({
+        id: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const job = await ctx.prisma.job.findUnique({
+        where: {
+          id: input.id,
+        },
+        include: {
+          company: true,
+        },
+      });
+      return job;
+    }),
   getAllJobs: publicProcedure.query(async ({ ctx }) => {
-    const jobs = await ctx.prisma.job.findMany({include: {
-      company: true
-    }});
+    const jobs = await ctx.prisma.job.findMany({
+      include: {
+        company: true,
+      },
+    });
     return jobs;
   }),
+  getApplicationsByExp: publicProcedure
+  .input(z.object({
+    yearOfExp: z.number()
+  }))
+  .query(async ({ ctx, input }) => {
+    const jobs = await ctx.prisma.application.findMany({
+      where: {
+        person: {
+          year_of_exp: {
+            gt: input.yearOfExp
+          }
+        }
+      }
+    });
+    return jobs;
+  }),
+  applyForJob: publicProcedure
+    .input(
+      z.object({
+        jobId: z.number(),
+        personId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const existedApplication = await ctx.prisma.application.findFirst({
+        where: {
+          jobId: input.jobId,
+          personId: input.personId,
+        },
+      });
+
+      if (existedApplication)
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "You already applied to this job",
+        });
+
+      const application = await ctx.prisma.application.create({
+        data: {
+          jobId: input.jobId,
+          personId: input.personId,
+        },
+      });
+
+      return application;
+    }),
   deleteJob: publicProcedure
     .input(
       z.object({
@@ -96,6 +162,36 @@ export const jobRouter = router({
           salary: input.salary,
           jobType: input.jobType,
           Status: input.status,
+        },
+      });
+
+      return updatedJob;
+    }),
+  pinApplier: publicProcedure
+    .input(
+      z.object({
+        applicationId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const updatedJob = await ctx.prisma.pinned.create({
+        data: {
+          applicationId: input.applicationId,
+        },
+      });
+
+      return updatedJob;
+    }),
+  unPinApplier: publicProcedure
+    .input(
+      z.object({
+        applicationId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const updatedJob = await ctx.prisma.pinned.delete({
+        where: {
+          id: input.applicationId,
         },
       });
 

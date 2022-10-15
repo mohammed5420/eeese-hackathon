@@ -70,7 +70,10 @@ model Person {
     userId       String
     Social_links Social_links[]
     bio          String
+    year_of_exp  Int            @default(0)
     location     String
+    Application  Application[]
+    Pinned       Pinned[]
 }
 
 model Company {
@@ -100,6 +103,19 @@ model Job {
     company         Company           @relation(fields: [companyId], references: [id])
     JotRequirements JobRequirements[]
     Status          JobStatus
+    Application     Application[]
+}
+
+model Application {
+    id        Int       @id @default(autoincrement())
+    createdAt DateTime  @default(now()) @db.DateTime(6)
+    updatedAt DateTime  @default(now()) @db.DateTime(6)
+    deletedAt DateTime? @db.DateTime(6)
+    job       Job       @relation(fields: [jobId], references: [id])
+    jobId     Int
+    person    Person    @relation(fields: [personId], references: [id])
+    personId  Int
+    Pinned    Pinned[]
 }
 
 model JobRequirements {
@@ -123,6 +139,17 @@ model Social_links {
     companyId Int?
     Person    Person?   @relation(fields: [personId], references: [id])
     personId  Int?
+}
+
+model Pinned {
+    id            Int         @id @default(autoincrement())
+    createdAt     DateTime    @default(now()) @db.DateTime(6)
+    updatedAt     DateTime    @default(now()) @db.DateTime(6)
+    deletedAt     DateTime?   @db.DateTime(6)
+    application   Application @relation(fields: [applicationId], references: [id])
+    Person        Person?     @relation(fields: [personId], references: [id])
+    personId      Int?
+    applicationId Int
 }
 
 model VerificationToken {
