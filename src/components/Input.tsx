@@ -16,9 +16,8 @@ const Input = ({ error, touched, label, className, ...props }: Props) => {
         <input
           type="text"
           placeholder="Type here"
-          className={`input input-bordered w-full max-w-xs ${
-            error && touched && " input-error "
-          }`}
+          className={`input input-bordered w-full ${error && touched && " input-error "
+            }`}
           id={randomId}
           {...props}
         />
